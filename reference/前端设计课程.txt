@@ -1,0 +1,10 @@
+csdiy 链接如下：
+https://csdiy.wiki/Web开发/mitweb/
+
+是一个 MIT 的夏校课程，内容是前端开发（不过是基于 React 的）
+
+其中重要的是提供了一个前端设计的方法，在如下的链接中有 B 站上的搬运：
+https://www.bilibili.com/video/BV14aHvesE35?spm_id_from=333.788.videopod.sections&vd_source=b6f39598a6fd534baec8ae83f2185c6a&p=9
+https://www.bilibili.com/video/BV14aHvesE35?spm_id_from=333.788.videopod.sections&vd_source=b6f39598a6fd534baec8ae83f2185c6a&p=9
+
+应该只需要看这两节课就好，其余的内容因为用的工具链不同（而且也比较基础）参考意义就不大了
