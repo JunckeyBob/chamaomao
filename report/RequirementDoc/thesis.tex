@@ -8,6 +8,7 @@
 \usepackage{longtable}
 \usepackage{xltabular}
 \usepackage{etoolbox}
+\usepackage{graphicx}
 
 
 \setlength{\parindent}{2em} % 控制首行缩进  
@@ -148,7 +149,7 @@
   \item 查看动物详细信息
   \item 新建动物、上传照片
   \item 提出领养申请
-  \item 查看动物定位地图与更新定位
+  \item 上传动物地图定位
   \item 动物识图搜索
   \item 查看教程和指南
 \end{itemize}
@@ -334,7 +335,7 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/use323.png}
+  \includegraphics[width=0.8\textwidth]{figures/use323.png}
 \end{figure}
 
 \noindent\textbf{用例}
@@ -394,7 +395,7 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/use324.png}
+  \includegraphics[width=0.94\textwidth]{figures/use324.png}
 \end{figure}
 
 \noindent\textbf{用例}
@@ -455,7 +456,7 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/use325.png} 
+  \includegraphics[width=0.95\textwidth]{figures/use325.png} 
 \end{figure}
 
 \noindent\textbf{用例}
@@ -516,7 +517,7 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/use326.png} 
+  \includegraphics[width=0.95\textwidth]{figures/use326.png} 
 \end{figure}
 
 \noindent\textbf{用例}
@@ -572,7 +573,7 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/use327.png}
+  \includegraphics[width=0.95\textwidth]{figures/use327.png}
 \end{figure}
 
 \noindent\textbf{用例}
@@ -587,14 +588,14 @@
   \hline \endlastfoot
 
   \textbf{主要参与者} & 用户 \\ \hline
-  \textbf{目标} & 用户可使用动物定位地图 \\ \hline
+  \textbf{目标} & 用户可更新动物定位 \\ \hline
   \textbf{前提条件} & 用户完成登录 \\ \hline
   \textbf{工作流程} & 
   \vspace{-0.5em}
   \begin{itemize}[topsep=0pt, partopsep=0pt, left=0pt, nosep]
-      \item 用户查看动物地图
+      \item 管理员可以查看动物地图
       \item 系统返回动物地图信息
-      \item 用户更新某动物定位
+      \item 用户可以更新某动物定位
       \item 系统修改定位数据
   \end{itemize} \\ \hline
   \textbf{拓展点} &
@@ -610,6 +611,7 @@
       \item 系统功能无响应
       \item 动物地图无法查看
       \item 用户无法修改动物定位
+      \item 用户有权限查看全局地图
   \end{itemize} \\ \hline
   \textbf{优先级} & 应该实现 \\ \hline
   \textbf{使用频率} & 频繁 \\ \hline
@@ -720,28 +722,28 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{figures/df32.png}
+  \includegraphics[width=0.6\textwidth]{figures/df32.png}
 \end{figure}
 
 \subsubsection{编辑动物信息}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{figures/df33.png}
+  \includegraphics[width=0.65\textwidth]{figures/df33.png}
 \end{figure}
 
 \subsubsection{领养申请}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/df34.png}
+  \includegraphics[width=0.85\textwidth]{figures/df34.png}
 \end{figure}
 
 \subsubsection{动物地图}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/df35.png}
+  \includegraphics[width=0.65\textwidth]{figures/df35.png}
 \end{figure}
 
 \section{状态图}
@@ -766,7 +768,7 @@
   注册、登录、登出 & 个人信息 \\ \hline
   查看、修改个人信息 & 个人信息、管理员 \\ \hline
   查看、修改动物信息 & 动物、管理员 \\ \hline
-  查看、更新动物地图 & 地图 \\ \hline
+  更新动物定位 & 地图 \\ \hline
   提交领养申请 & 领养信息 \\ \hline
   使用动物识图 & 搜索识图 \\ \hline 
   查看领养指南 & 领养指南 \\ \hline
@@ -882,7 +884,7 @@
 
   \verb|RESPONSIBILITY| & \verb|COLLABORATOR| \\ \hline
   地图样式 &  \\ \hline
-  提供位置查询 & 普通用户、管理员 \\ \hline
+  提供位置查询 & 管理员 \\ \hline
   动物地理位置和时间戳 & 动物 \\ \hline
   处理位置更新 &  普通用户、管理员 \\ \hline
 \end{xltabular}
@@ -941,7 +943,7 @@
   \verb|L7| & 领养申请管理指令 & 管理员 & 动物领养子系统 & 管理员审核领养申请 \\ \hline
   \verb|L8| & 领养指南查询指令 & 用户 & 动物领养子系统 & 用户查询领养指南 \\ \hline
   \verb|L9| & 领养指南管理指令 & 管理员 & 动物领养子系统 & 管理员发布领养指南 \\ \hline
-  \verb|L10| & 动物位置查询指令 & 用户 & 动物地图子系统 & 用户查询动物地图 \\ \hline
+  \verb|L10| & 动物位置查询指令 & 管理员 & 动物地图子系统 & 管理员查询动物地图 \\ \hline
   \verb|L11| & 动物位置更新指令 & 用户 & 动物地图子系统 & 用户更新动物位置 \\ \hline
   \verb|L12| & 图像识别请求 & 用户 & 动物地图子系统 & 用户上传图片请求识别 \\ \hline
   \verb|L13| & 动物信息 & 基本信息子系统 & 动物领养子系统/动物地图子系统 & 子系统间传递必要的动物基础信息以完成关联操作（如申请、定位） \\ \hline
@@ -1130,7 +1132,7 @@
     \item \textbf{提交/查看领养申请} \\
     用户对心仪的动物可以提交领养申请，填写必要的申请信息或问卷。用户可以在个人中心查看自己提交的所有领养申请及其当前的审核状态（待审核、已批准、已拒绝）
     \item \textbf{使用动物地图} \\
-    用户可以查看动物地图，了解区域内已记录动物的大致分布情况
+    用户可以更新动物位置，为动物地图建设作出贡献
     \item \textbf{使用动物识图} \\
     用户可以通过拍照或上传本地图片的方式，尝试识别遇到的动物，系统返回可能的种类、品种以及系统内相似的动物信息
     \item \textbf{查看领养指南} \\
