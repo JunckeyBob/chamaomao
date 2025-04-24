@@ -65,6 +65,17 @@ body, html {
   background-image: url("../img/stripes.svg");
   background-size: cover; 
 }
+.filter-card {
+  display: block;
+  width: 1270px;
+  height: 200px;
+  background-color: #833c0e;
+  border-radius: 20px;
+  border: none;
+  margin-bottom: 30px;
+  margin-left: 60px;
+  padding: 20px;
+}
 
 .card {
   display: block;
