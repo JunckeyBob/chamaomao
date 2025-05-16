@@ -12,6 +12,7 @@
 5. click cat => ./cat/cat-su.html
   1. click edit => ./cat/edit.html
   2. click map => ./cat/map-su.html
+  3. click edit guide => ./adopt/adopt-su.html
 6. click add => ./cat/edit.html
   
 
@@ -23,3 +24,4 @@
 4. click info => ./info/info.html
   1. click back => ./home/home.html
 5. click cat => ./cat/cat.html
+  1. click adopt => ./adopt/adopt.html

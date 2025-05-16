@@ -35,80 +35,30 @@ body, html {
   font-size: 25px;
 }
 
-.title-container {
-  display: block;
+.content {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 90px;
-  color: #fff3d8;
-  font-weight: bold;
-  font-size: 80px;
-  font-family: "ZCOOL KuaiLe", sans-serif;
-  padding: 0;
-  margin: 0;
+  height: 90%;
 }
 
-.title-container p {
-  margin: 30px 30px 30px 60px;
-}
-
-.info-container {
-  display: block;
-  width: 100%;
-  min-height: 500px;
-  color: #fff3d8;
-  font-size: 40px;
-  font-family: "ZCOOL KuaiLe", sans-serif;
-  padding: 0;
-}
-
-.line-container {
-  display: block;
-  width: 100%;
-  height: 60px;
-  color: #fff3d8;
-  font-size: 40px;
-  font-family: "ZCOOL KuaiLe", sans-serif;
-  margin: 0 0 20px 0 ;
-  padding: 0px ;
-}
-
-.text-container {
-  display: block;
-  float: left;
-  width: 200px;
-  height: 60px;
-  font-size: 40px;
-  font-family: "ZCOOL KuaiLe", sans-serif;
-  margin: 0 0 0 60px ;
-  padding: 0px ;
-}
-
-
-.input-container {
-  display: block;
-  float: left;
-  width: 400px;
-  height: 50px;
-  font-size: 30px;
-  font-family: "ZCOOL KuaiLe", sans-serif;
-  border: none;
-  border-radius: 5px;
-  color: #ffc23f;
-  background-color: #fff3d8;
-  padding: 10px 0 0 20px;
-}
-
-.confirm-button {
-  display: block;
-  width: 160px;
-  height: 60px;
-  padding: 10px 20px 10px 20px;
-  font-size: 30px;
-  font-family: "ZCOOL KuaiLe", sans-serif;
-  border: none;
-  border-radius: 5px;
+.op-button {
   background-color: #ff9600;
   color: #fff3d8;
-  margin: 30px 0 0 60px;
-  text-align: center;
+  display: block;
+  border: none;
+  border-radius: 10px;
+  width: 300px;
+  height: 70px;
+  font-family: "ZCOOL KuaiLe", sans-serif;
+  font-size: 40px;
+  padding: 10px 20px 10px 20px;
+  margin: 20px 0  0 200px;
+}
+
+p {
+  color: #ff9600;
+  font-family: "ZCOOL KuaiLe", sans-serif;
+  font-size: 30px;
+  margin: 20px 0 0 200px;
 }
