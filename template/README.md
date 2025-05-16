@@ -7,6 +7,8 @@
   1. click add => ./map/map.html
 3. click application => ./application/application-su.html
   1. click already done => ./application/pending-su.html
+4. click info => ./info/info-su.html
+  1. click back => ./home/home.html
   
 
 **For User**
@@ -14,3 +16,5 @@
 2. Click map => ./map/map.html
 3. click application => ./application/application.html
   1. click already done => ./application/pending.html
+4. click info => ./info/info.html
+  1. click back => ./home/home.html
