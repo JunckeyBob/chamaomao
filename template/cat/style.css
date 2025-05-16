@@ -31,6 +31,7 @@ body, html {
 .info-container {
   display: block;
   width: 100%;
+  min-height: 400px;
 }
 
 .button-container {
@@ -51,7 +52,7 @@ body, html {
   float: left;
   display: block;
   height: 100%;
-  padding: 20px 60px;
+  padding: 0px 60px;
   color: #fff3d8;
 }
 
@@ -85,12 +86,32 @@ body, html {
 .name-container {
   display: block;
   width: 100%;
+  min-height: 90px;
 }
 
 .name {
   float: left;
   font-size: 50px;
   font-weight: bold;
+}
+
+.edit-name {
+  float: left;
+  background-color: #fff3d8;
+  color: #ffc23f;
+  border: none;
+  border-radius: 10px;
+  height: 50px;
+  padding: 5px 15px 5px 15px;
+  margin: 35px 0 0 10px;
+  font-size: 40px;
+}
+
+.add-icon {
+  font-size: 160px;
+  font-weight: bold;
+  float: left;
+  margin: 30px 0 0 60px;
 }
 
 .state {
@@ -118,4 +139,53 @@ body, html {
   width: 240px;
   font-family: "ZCOOL KuaiLe", sans-serif;
   font-size: 45px;
+}
+
+select {
+  float: left;
+  background-color: #ff9600;
+  color: #fff3d8;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px 5px 10px;
+  font-size: 30px;
+  font-family: 'ZCOOL KuaiLe', sans-serif;
+}
+
+option {
+  background-color: #ff9600;
+  color: #fff3d8;
+  font-size: 30px;
+  font-family: 'ZCOOL KuaiLe', sans-serif;
+}
+
+.line-container {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  margin: 0 0 20px 0;
+}
+
+.attr-container {
+  font-size: 30px;
+  color: #fff3d8;
+  font-family: 'ZCOOL KuaiLe', sans-serif;
+  display: block;
+  min-height: 40px;
+  float: left;
+  min-width: 100px;
+  margin: 0 0 0 0;
+}
+
+.input-container {
+  display: block;
+  min-width: 100px;
+  min-height: 30px;
+  font-size: 25px;
+  font-family: 'ZCOOL KuaiLe', sans-serif;
+  color: #fff3d8;
+  background-color: #ff9600;
+  padding: 10px 10px 10px 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
