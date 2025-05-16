@@ -88,3 +88,18 @@ body, html {
   height: 50px;
   width: 100px;
 }
+
+.check-button {
+  float: right;
+  background-color: #ff9600;
+  color: #fff3d8;
+  border: none;
+  border-radius: 15px;
+  align-content: center;
+  font-family: "ZCOOL KuaiLe", sans-serif;
+  font-size: 30px;
+  margin-right: 20px;
+  margin-top: 25px;
+  height: 50px;
+  width: 50px;
+}

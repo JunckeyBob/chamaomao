@@ -43,14 +43,14 @@ body, html {
 .map-container {
   display: block;
   width: 80%;
-  min-height: 620px;
+  min-height: 600px;
   margin-left: 7%;
   margin-top: 0px;
   border: none;
   border-radius: 30px;
   background-color: #fff3d8;
   color: #ff9600;
-  padding: 0 30px 0 30px;
+  padding: 30px 30px 0 30px;
 }
 
 .title-container {
@@ -83,4 +83,37 @@ body, html {
   display: block;
   width: 100%;
   height: 300px;
+}
+
+.upload-button {
+  display: block;
+  width: 80%;
+  height: 560px;
+  background-color: #ffd885;
+  color: #fff3d8;
+  border: none;
+  border-radius: 30px 0 0 30px;
+  float: left;
+}
+
+.upload-button p {
+  font-size: 200px;
+  font-weight: 700;
+}
+
+.confirm-button {
+  display: block;
+  width: 20%;
+  height: 560px;
+  background-color: #ff9600;
+  color: #fff3d8;
+  border: none;
+  border-radius: 0 30px 30px 0;
+  float: left;
+}
+
+.confirm-button p {
+  font-size: 100px;
+  font-weight: 700;
+  font-family: "ZCOOL KuaiLe", sans-serif;
 }
