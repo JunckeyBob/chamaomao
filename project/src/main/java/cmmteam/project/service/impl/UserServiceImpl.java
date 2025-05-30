@@ -9,22 +9,32 @@ import cmmteam.project.entity.enums.AccountStatus;
 import cmmteam.project.entity.enums.UserRole;
 import cmmteam.project.repository.UserRepository;
 import cmmteam.project.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.*;
 
 import java.time.LocalDateTime;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -51,22 +61,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String loginUser(UserLoginRequestDto loginRequest) {
-        //simple match
-        User user = userRepository.findByPhoneNumber(loginRequest.getPhoneNumber())
-                .orElseThrow(() -> new RuntimeException("登录失败：手机号或密码错误！"));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getPhoneNumber(),
+                            loginRequest.getPassword()
+                    )
+            );
+            // login success
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("登录失败：手机号或密码错误！");
+            return "登录成功！"; // Session set up
+
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("登录失败：手机号或密码错误，或账户状态异常。", e);
         }
-
-        if (user.getAccountStatus() != AccountStatus.ACTIVE) {
-            if (user.getAccountStatus() == AccountStatus.INACTIVE || user.getAccountStatus() == AccountStatus.SUSPENDED) {
-                throw new RuntimeException("账户已被禁用或暂停使用。");
-            }
-            throw new RuntimeException("账户状态异常，请联系管理员。");
-        }
-
-        return "登录成功 (Token生成逻辑待实现)";
     }
 
     @Override

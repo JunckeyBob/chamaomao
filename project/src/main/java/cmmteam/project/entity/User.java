@@ -6,7 +6,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +24,7 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,4 +88,38 @@ public class User {
     @OneToMany(mappedBy = "authorUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<AdoptionGuide> authoredGuides = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.phoneNumber; // as Spring Security's username
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;    //never expire
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.accountStatus != AccountStatus.SUSPENDED;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;    //never expire
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.accountStatus == AccountStatus.ACTIVE;
+    }
+
+    public Integer getId() {
+        return this.usersId;
+    }
 }
