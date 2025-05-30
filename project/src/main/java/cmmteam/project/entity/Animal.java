@@ -27,8 +27,8 @@ public class Animal {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "specise", length = 50, nullable = false)
-    private String specise;
+    @Column(name = "species", length = 50, nullable = false)
+    private String species;
 
     @Column(name = "breed", length = 50)
     private String breed;

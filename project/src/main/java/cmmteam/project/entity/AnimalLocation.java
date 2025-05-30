@@ -32,8 +32,8 @@ public class AnimalLocation {
     @Column(name = "latitude", precision = 9, scale = 6, nullable = false)
     private BigDecimal latitude;
 
-    @Column(name = "longtitude", precision = 9, scale = 6, nullable = false)
-    private BigDecimal longtitude;
+    @Column(name = "longitude", precision = 9, scale = 6, nullable = false)
+    private BigDecimal longitude;
 
     @CreationTimestamp
     @Column(name = "timestamp", nullable = false, updatable = false)

@@ -14,7 +14,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Integer> {
 
     List<Animal> findByNameContainingIgnoreCase(String nameKeyword);
 
-    List<Animal> findBySpecise(String specise);
+    List<Animal> findBySpecies(String species);
 
     List<Animal> findByBreed(String breed);
 

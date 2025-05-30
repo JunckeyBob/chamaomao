@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class AnimalLocationRequestDto {
-    private Long animalId;
+    private int animalId;
 
     @NotNull(message = "纬度不能为空。")
     private BigDecimal latitude;

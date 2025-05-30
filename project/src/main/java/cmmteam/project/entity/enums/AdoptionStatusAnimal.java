@@ -1,5 +1,5 @@
 package cmmteam.project.entity.enums;
 
 public enum AdoptionStatusAnimal {
-    AVAILABLE, PENDING_ADOPTION, ADOPTED, NOT_AVAILABLE
+    INFO_PENDING_REVIEW, AVAILABLE, PENDING_ADOPTION, ADOPTED, NOT_AVAILABLE
 }

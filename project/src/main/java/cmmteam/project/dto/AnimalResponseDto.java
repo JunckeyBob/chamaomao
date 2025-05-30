@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class AnimalResponseDto {
-    private Long animalId;
+    private int animalId;
     private String name;
     private String species;
     private String breed;
@@ -15,8 +15,7 @@ public class AnimalResponseDto {
     private AnimalGender gender;
     private String healthStatus;
     private AdoptionStatusAnimal adoptionStatus;
-    private String characteristics;
-    private Long managedByUserId;
+    private int managedByUserId;
     private List<AnimalPhotoDto> photos;
     private List<AnimalLocationResponseDto> locations;
 }

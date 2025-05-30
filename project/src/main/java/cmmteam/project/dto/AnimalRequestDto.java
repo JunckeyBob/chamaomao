@@ -34,9 +34,6 @@ public class AnimalRequestDto {
 
     private AdoptionStatusAnimal adoptionStatus;
 
-    @Size(max = 500, message = "性格特点描述长度不能超过500个字符。")
-    private String characteristics;
-
     private List<String> photoUrls;
 
     private AnimalLocationRequestDto initialLocation;

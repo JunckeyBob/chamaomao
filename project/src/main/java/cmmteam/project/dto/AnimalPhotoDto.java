@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class AnimalPhotoDto {
-    private Long photoId;
+    private int photoId;
     private String photoUrl;
-    private Long animalId;
+    private int animalId;
 }

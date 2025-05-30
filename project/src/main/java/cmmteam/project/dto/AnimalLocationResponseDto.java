@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 
 @Data
 public class AnimalLocationResponseDto {
-    private Long locationId;
-    private Long animalId;
+    private int locationId;
+    private int animalId;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String description;
     private LocalDateTime timestamp;
-    private Long reportedByUserId;
+    private int reportedByUserId;
 }
