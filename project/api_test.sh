@@ -276,6 +276,61 @@ else
     print_info "未获取到用户创建的动物ID，跳过普通用户删除测试。"
 fi
 
+# --- 照片相关测试变量 ---
+PHOTO_FILE_PATH="/home/joseph/tmp/example.jpg"  # 准备一个测试用的图片文件 # TODO: change it!
+PHOTO_ID="2"  # 用于存储上传的照片ID
+
+# 12. 上传动物照片 (用户上传)
+print_step "12. 上传动物照片 (用户上传到动物ID: $USER_CREATED_ANIMAL_ID)"
+if [ -z "$USER_CREATED_ANIMAL_ID" ] || [ "$USER_CREATED_ANIMAL_ID" == "null" ]; then
+    print_info "警告: 未获取到用户创建的动物ID，跳过照片上传测试。"
+else
+    if [ -f "$PHOTO_FILE_PATH" ]; then
+        # 使用curl上传文件
+        upload_response=$(curl -s -w "\n%{http_code}" -b $USER_COOKIE_FILE \
+            -F "file=@$PHOTO_FILE_PATH" \
+            "$BASE_URL/animals/$USER_CREATED_ANIMAL_ID/photos")
+        
+        # 分离响应体和状态码
+        upload_http_status=$(echo "$upload_response" | tail -n1)
+        upload_response_body=$(echo "$upload_response" | head -n -1)
+        
+        echo "--- 上传照片响应 ---"
+        echo "$upload_response_body"
+        echo "HTTP Status: $upload_http_status"
+        
+        if [ "$upload_http_status" -eq 201 ]; then
+            print_info "照片上传成功!"
+            PHOTO_ID=$(echo "$upload_response_body" | jq -r '.photoId // empty')
+            if [ -n "$PHOTO_ID" ] && [ "$PHOTO_ID" != "null" ]; then
+                print_info "上传的照片ID: $PHOTO_ID"
+            else
+                print_error "未能从响应中提取照片ID。"
+                PHOTO_ID=""
+            fi
+        else
+            print_error "照片上传失败!"
+        fi
+    else
+        print_error "测试图片文件 $PHOTO_FILE_PATH 不存在，跳过上传测试。"
+    fi
+fi
+
+# 13. 获取动物照片列表
+print_step "13. 获取动物照片列表 (动物ID: $USER_CREATED_ANIMAL_ID)"
+if [ -z "$USER_CREATED_ANIMAL_ID" ] || [ "$USER_CREATED_ANIMAL_ID" == "null" ]; then
+    print_info "警告: 未获取到动物ID，跳过获取照片列表测试。"
+else
+    execute_curl_and_check "GET" "$BASE_URL/animals/$USER_CREATED_ANIMAL_ID/photos" "" "" '"photoId":' 200
+fi
+
+# 14. 删除动物照片
+print_step "14. 删除动物照片 (照片ID: $PHOTO_ID)"
+if [ -z "$PHOTO_ID" ] || [ "$PHOTO_ID" == "null" ]; then
+    print_info "警告: 未获取到照片ID，跳过删除测试。"
+else
+    execute_curl_and_check "DELETE" "$BASE_URL/animals/$USER_CREATED_ANIMAL_ID/photos/$PHOTO_ID" "$USER_COOKIE_FILE" "" "图片删除成功" 200
+fi
 
 # --- 测试结束 ---
 print_step "API 测试脚本执行完毕"
