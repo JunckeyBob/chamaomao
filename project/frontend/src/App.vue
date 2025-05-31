@@ -1,4 +1,17 @@
-
+<!-- 
+  TODO:
+  1. 从后端获取所有的猫猫数据
+  2. 从登录页面获得用户信息（还没做好
+  3. 当用户点击筛选的时候，显示筛选卡片(filter card, already commented out)
+  4. 根据筛选的条件，筛选出符合条件的猫猫
+  5. 再次点击筛选按钮，隐藏筛选卡片
+  6. 点击查看按钮，跳转到猫猫详情页面（还没做好
+  7. 点击添加按钮，跳转到添加猫猫页面（还没做好）
+  8. 点击申请按钮，跳转到申请页面（还没做好
+  9. 有没有阅读的申请时，采用alert按钮（alert, already commented out
+  10. 点击我的按钮，跳转到个人信息页面（还没做好
+  11. 点击地图按钮，跳转到地图页面（还没做好
+-->
 
 <template>
   <div class="home-container">
@@ -24,6 +37,8 @@
         >
           <i class="fa-solid fa-file"></i><br>申请
         </button>
+        <!-- Alert -->
+        <!--<button class="home-button"><i class="fa-solid fa-circle-exclamation" style="color: red"></i><br>申请</button>-->
         <button 
           class="home-button"
           @click="handleButtonClick('map')"
