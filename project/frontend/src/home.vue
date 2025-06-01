@@ -11,6 +11,7 @@
   9. 有没有阅读的申请时，采用alert按钮（alert, already commented out
   10. 点击我的按钮，跳转到个人信息页面（还没做好
   11. 点击地图按钮，跳转到地图页面（还没做好
+  12. 修改页面，调整比例
 -->
 
 <template>
@@ -122,11 +123,11 @@ export default {
   name: 'Home',
   setup() {
     // Reactive data
-    const cats = ref([
+    var cats = ref([
       { id: 1, name: '猫猫名字1', img: '', type: '', state: '' },
       { id: 2, name: '猫猫名字2', img: '', type: '', state: '' }
     ])
-    const user = ref({
+    var user = ref({
       name: '用户名字',
       ID: '11111111',
       role: 'supervisor'

@@ -1,6 +1,8 @@
 <!-- 
   TODO:
   1. 添加handleLogin方法
+  2. 添加createAccount方法
+  3. 将数据传输给别的模块
 -->
 <template>
   <div class="home-container">
@@ -10,17 +12,17 @@
         <!-- name -->
         <div class="line-container">
           <div class="icon-container"><i class="fa-solid fa-user"></i></div>
-          <div class="input-container">吴秋彼</div>
+          <input class="input-container" :value="name"></input>
         </div>
         <!-- password -->
         <div class="line-container">
           <div class="icon-container"><i class="fa-solid fa-lock"></i></div>
-          <div class="input-container">********</div>
+          <input class="input-container" :value="password" type="password"></input>
         </div>
         <!-- buttons -->
         <div class="line-container">
           <button>注册</button>
-          <button>登录</button>
+          <button @click="handleLogin()">登录</button>
         </div>
       </div>
     </div>
@@ -29,13 +31,32 @@
 </template>
 
 <script>
+import { onMounted, ref } from 'vue';
+
+
 export default {
   name: 'Login',
+  
+  setup () {
+    var name = ref('');
+    var password = ref('');
+    onMounted(() => {
+      document.title = '登录 - 查毛毛';
+
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'
+      document.head.appendChild(link)
+    });
+  },
   methods: {
     handleLogin() {
       // Your login validation logic here
       // If login is successful:
       this.$router.push('/home') // or wherever App.vue content should go
+    },
+    createAccount () {
+      // TODO!!!
     }
   }
 }
@@ -44,17 +65,11 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Kiwi+Maru&family=Noto+Sans+SC:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=ZCOOL+KuaiLe&display=swap');
 
-body, html {
-  margin: 0;
-  font-family: "ZCOOL KuaiLe", sans-serif;
-  display: flex;
-  height: 100%;
-  width: 100%;
-  background-color: #ffc23f;
-}
 
 .home-container {
   width: 100%;
+  height: 100%;
+  display: block;
   background-image: url("./img/white-stripes.svg");
   background-size: cover;
 }
@@ -63,7 +78,7 @@ body, html {
   display: flex;
   background-image: url("./img/house.svg");
   background-size: cover;
-  width: 40%;
+  width: 50%;
   margin-left: 25%;
   min-height: 80%;
 }
@@ -71,8 +86,8 @@ body, html {
 .login-container {
   display: block;
   color: #fff3d8;
-  margin-top: 250px;
-  margin-left: 175px;
+  margin-top: 220px;
+  margin-left: 160px;
 }
 
 .line-container {
