@@ -9,7 +9,7 @@
   7. 点击添加按钮，跳转到添加猫猫页面（还没做好）
   8. 点击申请按钮，跳转到申请页面（还没做好
   9. 有没有阅读的申请时，采用alert按钮（alert, already commented out
-  10. 点击我的按钮，跳转到个人信息页面（还没做好
+  10. 点击我的按钮，跳转到个人信息页面（还没做好 done by QB
   11. 点击地图按钮，跳转到地图页面（还没做好
   12. 修改页面，调整比例
 -->
@@ -28,13 +28,13 @@
         <button 
           class="home-button" 
           style="margin-right: 35px"
-          @click="handleButtonClick('profile')"
+          @click="toProfile()"
         >
           <i class="fa-solid fa-circle-user"></i><br>我的
         </button>
         <button 
           class="home-button"
-          @click="handleButtonClick('apply')"
+          @click=""
         >
           <i class="fa-solid fa-file"></i><br>申请
         </button>
@@ -42,13 +42,13 @@
         <!--<button class="home-button"><i class="fa-solid fa-circle-exclamation" style="color: red"></i><br>申请</button>-->
         <button 
           class="home-button"
-          @click="handleButtonClick('map')"
+          @click=""
         >
           <i class="fa-solid fa-location-dot"></i><br>地图
         </button>
         <button 
           class="home-button"
-          @click="handleButtonClick('filter')"
+          @click=""
         >
           <i class="fa-solid fa-filter"></i><br>筛选
         </button>
@@ -152,36 +152,15 @@ export default {
       document.head.appendChild(link)
     })
 
-    // Methods
-    const handleButtonClick = (buttonType) => {
-      console.log(`Clicked ${buttonType} button`)
-      // Add your navigation logic here
-      switch(buttonType) {
-        case 'profile':
-          // Handle profile navigation
-          break
-        case 'apply':
-          // Handle application navigation
-          break
-        case 'map':
-          // Handle map navigation
-          break
-        case 'filter':
-          // Handle filter logic
-          break
-      }
-    }
-
-    const viewCat = (catId) => {
-      console.log(`Viewing cat with ID: ${catId}`)
-      // Add navigation to cat detail page
-    }
 
     return {
       cats,
-      user,
-      handleButtonClick,
-      viewCat
+      user
+    }
+  }, 
+  methods: {
+    toProfile () {
+      this.$router.push('/profile')
     }
   }
 }
@@ -199,7 +178,7 @@ export default {
 .head-container {
   display: block;
   min-width: 100%;
-  min-height: 20%;
+  min-height: 25%;
   padding-top: 30px;
 }
 
@@ -248,6 +227,7 @@ export default {
   min-height: 80%;
   background-image: url("img/stripes.svg");
   background-size: cover; 
+  padding-bottom: 30px;
 }
 
 .filter-card {
@@ -264,13 +244,13 @@ export default {
 
 .card {
   display: block;
-  width: 1270px;
+  width: 90%;
   height: 150px;
   background-color: #fff3d8;
   border-radius: 20px;
   border: none;
   margin-bottom: 30px;
-  margin-left: 60px;
+  margin-left: 5%;
 }
 
 .cat-image {
@@ -312,7 +292,7 @@ export default {
   color: #ffc23f;
   border: none;
   font-size: 110px;
-  margin-left: 570px;
+  margin-left: 480px;
   margin-top: 15px;
 }
 
