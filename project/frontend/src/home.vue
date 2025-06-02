@@ -7,9 +7,9 @@
   5. 再次点击筛选按钮，隐藏筛选卡片
   6. 点击查看按钮，跳转到猫猫详情页面（还没做好
   7. 点击添加按钮，跳转到添加猫猫页面（还没做好）
-  8. 点击申请按钮，跳转到申请页面（还没做好
+  done by QB 8. 点击申请按钮，跳转到申请页面（还没做好 
   9. 有没有阅读的申请时，采用alert按钮（alert, already commented out
-  10. 点击我的按钮，跳转到个人信息页面（还没做好 done by QB
+  done by QB 10. 点击我的按钮，跳转到个人信息页面（还没做好 
   11. 点击地图按钮，跳转到地图页面（还没做好
   12. 修改页面，调整比例
 -->
@@ -34,7 +34,7 @@
         </button>
         <button 
           class="home-button"
-          @click=""
+          @click="this.$router.push('/application')"
         >
           <i class="fa-solid fa-file"></i><br>申请
         </button>
