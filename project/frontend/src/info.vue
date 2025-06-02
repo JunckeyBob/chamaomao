@@ -29,15 +29,15 @@
       </div>
       <div class="line-container">
         <div class="text-container">旧密码：</div>
-        <div class="input-container">******</div>
+        <input class="input-container" :value="oldPassword" type="password"></input>
       </div>
       <div class="line-container">
         <div class="text-container">新密码：</div>
-        <div class="input-container">*********</div>
+        <input class="input-container" :value="newPassword" type="password"></input>
       </div>
       <div class="line-container">
         <div class="text-container">确认密码：</div>
-        <div class="input-container">*********</div>
+        <input class="input-container" :value="confirmPassword" type="password"></input>
       </div>
       <div class="line-container">
         <button class="confirm-button">修改</button>
@@ -57,10 +57,24 @@ export default {
       name: 'QB',
       ID: '111111',
       role: 'supervisor'
-    })
+    });
+    var oldPassword = ref('');
+    var newPassword = ref('');
+    var confirmPassword = ref('');
+
+    onMounted(() => {
+      document.title = '个人信息 - 查毛毛';
+
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
+      document.head.appendChild(link);
+    });
   },
   methods: {
-
+    modifyPassword () {
+      // TODO: Implement password modification logic
+    }
   }
 }
 
@@ -105,7 +119,7 @@ export default {
   font-size: 60px;
   font-family: "ZCOOL KuaiLe", sans-serif;
   padding: 0;
-  margin: 0;
+  margin: 0 0 10px 0;
 }
 
 .title-container p {
@@ -125,9 +139,9 @@ export default {
 .line-container {
   display: block;
   width: 100%;
-  height: 60px;
+  height: 40px;
   color: #fff3d8;
-  font-size: 40px;
+  font-size: 30px;
   font-family: "ZCOOL KuaiLe", sans-serif;
   margin: 0 0 20px 0 ;
   padding: 0px ;
@@ -137,8 +151,8 @@ export default {
   display: block;
   float: left;
   width: 200px;
-  height: 60px;
-  font-size: 40px;
+  height: 40px;
+  font-size: 30px;
   font-family: "ZCOOL KuaiLe", sans-serif;
   margin: 0 0 0 60px ;
   padding: 0px ;
@@ -148,20 +162,20 @@ export default {
 .input-container {
   display: block;
   float: left;
-  width: 400px;
-  height: 50px;
-  font-size: 30px;
+  width: 200px;
+  height: 30px;
+  font-size: 20px;
   font-family: "ZCOOL KuaiLe", sans-serif;
   border: none;
   border-radius: 5px;
   color: #ffc23f;
   background-color: #fff3d8;
-  padding: 10px 0 0 20px;
+  padding: 5px 5px 5px 10px;
 }
 
 .confirm-button {
   display: block;
-  width: 160px;
+  width: 120px;
   height: 60px;
   padding: 10px 20px 10px 20px;
   font-size: 30px;
