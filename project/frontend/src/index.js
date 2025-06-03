@@ -5,6 +5,7 @@ import Profile from './info.vue'
 import Application from './application.vue'
 import Map from './map.vue'
 import Cat from './cat.vue'
+import Edit from './edit.vue'
 
 const routes = [
   { path: '/', name: 'Login', component: Login },
@@ -12,7 +13,8 @@ const routes = [
   { path: '/profile', name: 'Profile', component: Profile },
   { path: '/application', name: 'Application', component: Application },
   { path: '/map', name: 'Map', component: Map },
-  { path: '/cat', name: 'Cat', component: Cat }
+  { path: '/cat', name: 'Cat', component: Cat },
+  { path: '/edit', name: 'Edit', component: Edit }
 ]
 
 const router = createRouter({

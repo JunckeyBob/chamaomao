@@ -1,13 +1,11 @@
 <!--
   TODO:
-  1. 从home获取cat的数据
-  2. 显示cat的图片
-  3. 对于supervisor角色，按照./template/cat/cat-su.html显示按钮，已经注释掉
-  4. 将信息传递
+  1. 获取user和cat数据
+  2. 实现修改/添加功能
+  3. 如果是修改，取消和确认都跳转到原详情页面；如果是添加，取消跳转到home，确认跳转到猫猫详情页面
 -->
-
 <template>
-  <!-- main content -->
+<!-- main content -->
   <div class="home-container">
     <!-- head with back button -->
     <div class="head-container">
@@ -26,20 +24,43 @@
         <div class="image-container">
           <!-- simulation image -->
           <div class="image">
-            <p class="image-title"><br>猫猫<br>图片</p>
+            <p class="add-icon"><i class="fa-solid fa-plus"></i></p>
           </div>
         </div>
         <!-- text -->
         <div class="text-container">
           <div class="name-container">
-            <h1 class="name">{{ cat.name }}</h1>
-            <p class="state">{{ cat.state }}</p>
+            <h1 class="name">名字：</h1>
+            <input class="edit-name"></input>
+            <select style="margin: 50px 0 0 20px">
+              <option disabled selected>选择状态</option>
+              <option>已领养</option>
+              <option>待领养</option>
+              <option>留园观察</option>
+              <option>失踪</option>
+            </select>
           </div>
-          <p class="info">
-            品种：{{ cat.type }} <br><br>
-            基本信息：已于2024-1-1绝育 <br><br>
-            性格：活泼好动，喜欢玩耍 <br><br>
-          </p>
+          <div class="line-container"></div>
+          <div class="line-container">
+            <div class="attr-container">品种：</div>
+            <select>
+              <option disabled selected>选择品种</option>
+              <option>橘猫 / 橘白</option>
+              <option>玳瑁 / 三花</option>
+              <option>狸猫 / 狸白</option>
+              <option>奶牛</option>
+              <option>纯色</option>
+              <option>品种猫</option>
+            </select>
+          </div>
+          <div class="line-container">
+            <div class="attr-container">基本信息：</div>
+          </div>
+          <input class="input-container"></input>
+          <div class="line-container">
+            <div class="attr-container">性格：</div>
+          </div>
+          <input class="input-container"></input>
         </div>
       </div>
 
@@ -47,9 +68,8 @@
 
     <!-- button container -->
     <div class="button-container">
-      <button class="op-button" style="margin-right: 50px"><i class="fa-solid fa-house"></i>&nbsp;领养</button>
-      <!--<button class="op-button" @click="this.$router.push('/map')"><i class="fa-solid fa-location-dot"></i>&nbsp;定位</button>
-      <button class="op-button"><i class="fa-solid fa-pen-to-square"></i>&nbsp;编辑</button>-->
+      <button class="op-button"><i class="fa-solid fa-check"></i>&nbsp;确认</button>
+      <button class="op-button"><i class="fa-solid fa-xmark"></i>&nbsp;取消</button>
     </div>
 
   </div>
@@ -59,7 +79,7 @@
 import { ref, onMounted } from 'vue';
 
 export default {
-  name: 'Cat',
+  name: 'Edit',
   setup () {
     var cat = ref({
       id: 1,
@@ -76,7 +96,8 @@ export default {
     });
 
     onMounted(() => {
-      document.title = '猫猫详情';
+      document.title = '编辑猫猫信息';
+
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
@@ -87,7 +108,7 @@ export default {
       cat,
       user
     };
-  },
+  }, 
   methods: {
 
   }
@@ -100,6 +121,7 @@ export default {
 
 .home-container {
   width: 100%;
+  height: 100%;
 }
 
 .head-container {
@@ -107,14 +129,13 @@ export default {
   width: 100%;
   height: 10%;
   padding-top: 20px;
-  padding-bottom: 50px;
 }
 
 .content-container {
   display: block;
   width: 100%;
-  min-height: 65%;
-  background-image: url("../img/stripes.svg");
+  min-height: 70%;
+  background-image: url("./img/stripes.svg");
   background-size: cover;
 }
 
@@ -192,6 +213,7 @@ export default {
   border: none;
   border-radius: 10px;
   height: 50px;
+  width: 300px;
   padding: 5px 15px 5px 15px;
   margin: 35px 0 0 10px;
   font-size: 40px;

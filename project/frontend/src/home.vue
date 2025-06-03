@@ -103,7 +103,7 @@
 
       <!-- add button -->
       <div v-if="user.role === 'supervisor'" class="card">
-        <button class="add-button">
+        <button class="add-button" @click="this.$router.push('/edit')">
           <i class="fa-solid fa-plus"></i>
         </button> 
       </div>
@@ -225,7 +225,7 @@ export default {
   display: block;
   min-width: 100%;
   min-height: 80%;
-  background-image: url("img/stripes.svg");
+  background-image: url("./img/stripes.svg");
   background-size: cover; 
   padding-bottom: 30px;
 }
