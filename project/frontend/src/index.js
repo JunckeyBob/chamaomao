@@ -4,13 +4,15 @@ import Home from './home.vue'
 import Profile from './info.vue'
 import Application from './application.vue'
 import Map from './map.vue'
+import Cat from './cat.vue'
 
 const routes = [
   { path: '/', name: 'Login', component: Login },
   { path: '/home', name: 'Home', component: Home },
   { path: '/profile', name: 'Profile', component: Profile },
   { path: '/application', name: 'Application', component: Application },
-  { path: '/map', name: 'Map', component: Map }
+  { path: '/map', name: 'Map', component: Map },
+  { path: '/cat', name: 'Cat', component: Cat }
 ]
 
 const router = createRouter({

@@ -12,7 +12,7 @@
     <!-- head with back button -->
     <div class="head-container">
       <!-- back button -->
-      <button class="back-button">
+      <button class="back-button" @click="this.$router.push('/home')">
         <i class="fa-solid fa-arrow-left"></i>&nbsp;返回
       </button>
     </div>

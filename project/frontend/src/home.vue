@@ -95,7 +95,7 @@
         <!-- look up button -->
         <button 
           class="look-button"
-          @click="viewCat(cat.id)"
+          @click="this.$router.push('/cat')"
         >
           <i class="fa-solid fa-magnifying-glass"></i> &nbsp;查看
         </button>
@@ -292,7 +292,7 @@ export default {
   color: #ffc23f;
   border: none;
   font-size: 110px;
-  margin-left: 480px;
+  margin-left: 560px;
   margin-top: 15px;
 }
 

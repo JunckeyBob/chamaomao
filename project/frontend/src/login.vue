@@ -69,7 +69,6 @@ export default {
 .home-container {
   width: 100%;
   height: 100%;
-  display: block;
   background-image: url("./img/white-stripes.svg");
   background-size: cover;
 }
@@ -78,7 +77,7 @@ export default {
   display: flex;
   background-image: url("./img/house.svg");
   background-size: cover;
-  width: 50%;
+  width: 40%;
   margin-left: 25%;
   min-height: 80%;
 }
@@ -86,8 +85,8 @@ export default {
 .login-container {
   display: block;
   color: #fff3d8;
-  margin-top: 220px;
-  margin-left: 160px;
+  margin-top: 250px;
+  margin-left: 175px;
 }
 
 .line-container {
@@ -133,4 +132,5 @@ button {
   border: none;
   border-radius: 5px;
 }
+
 </style>
