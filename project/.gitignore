@@ -33,7 +33,6 @@ build/
 .vscode/
 
 ### others ###
-application.properties
 user_cookies.txt
 admin_cookies.txt
 

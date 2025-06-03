@@ -207,15 +207,19 @@ if echo "$admin_animal_response_body" | grep -q '"animalId"'; then
         print_info "管理员发布的动物ID: $ADMIN_CREATED_ANIMAL_ID"
         if echo "$admin_animal_response_body" | grep -q '"adoptionStatus":"AVAILABLE"'; then
             print_info "状态检查: 管理员发布的动物状态为 AVAILABLE (通过)"
+            ((passed_tests++))
         else
             print_error "状态检查: 管理员发布的动物状态不是 AVAILABLE (失败)"
+            ((failed_tests++))
         fi
     else
         print_error "未能从响应中提取管理员创建的动物ID。"
         ADMIN_CREATED_ANIMAL_ID="" # 确保为空
+        ((failed_tests++))
     fi
 else
     print_error "管理员创建动物失败或响应格式不符。"
+    ((failed_tests++))
 fi
 
 
@@ -235,15 +239,19 @@ if echo "$user_animal_response_body" | grep -q '"animalId"'; then
         print_info "普通用户发布的动物ID: $USER_CREATED_ANIMAL_ID"
         if echo "$user_animal_response_body" | grep -q '"adoptionStatus":"INFO_PENDING_REVIEW"'; then # 确保这是您Service中设置的状态
             print_info "状态检查: 用户发布的动物状态为 INFO_PENDING_REVIEW (通过)"
+            ((passed_tests++))
         else
             print_error "状态检查: 用户发布的动物状态不是 INFO_PENDING_REVIEW (失败)"
+            ((failed_tests++))
         fi
     else
         print_error "未能从响应中提取用户创建的动物ID。"
         USER_CREATED_ANIMAL_ID="" # 确保为空
+        ((failed_tests++))
     fi
 else
     print_error "普通用户创建动物失败或响应格式不符。"
+    ((failed_tests++))
 fi
 
 
@@ -277,7 +285,7 @@ else
 fi
 
 # --- 照片相关测试变量 ---
-PHOTO_FILE_PATH="/home/joseph/tmp/example.jpg"  # 准备一个测试用的图片文件 # TODO: change it!
+PHOTO_FILE_PATH="/home/user1639/chamaomao/project/src/example.jpg"  # 准备一个测试用的图片文件 # TODO: change it!
 PHOTO_ID="2"  # 用于存储上传的照片ID
 
 # 12. 上传动物照片 (用户上传)
@@ -332,6 +340,273 @@ else
     execute_curl_and_check "DELETE" "$BASE_URL/animals/$USER_CREATED_ANIMAL_ID/photos/$PHOTO_ID" "$USER_COOKIE_FILE" "" "图片删除成功" 200
 fi
 
+# --- 领养申请与审批测试 ---
+USER_APPLICATION_ID="" # 用于存储普通用户提交的领养申请ID
+TARGET_ANIMAL_ID_FOR_ADOPTION="" # 初始化为空
+
+print_step "准备领养申请测试的目标动物"
+
+# 尝试使用之前管理员创建的动物 ADMIN_CREATED_ANIMAL_ID
+if [ -n "$ADMIN_CREATED_ANIMAL_ID" ] && [ "$ADMIN_CREATED_ANIMAL_ID" != "null" ]; then
+    print_info "检查之前管理员创建的动物 (ID: $ADMIN_CREATED_ANIMAL_ID) 是否仍然可用..."
+    animal_check_response=$(curl -s -w "\n%{http_code}" -X GET -b $ADMIN_COOKIE_FILE "$BASE_URL/animals/$ADMIN_CREATED_ANIMAL_ID")
+    animal_check_status=$(echo "$animal_check_response" | tail -n1)
+    animal_check_body=$(echo "$animal_check_response" | head -n -1)
+
+    if [ "$animal_check_status" -eq 200 ]; then
+        if echo "$animal_check_body" | grep -q '"adoptionStatus":"AVAILABLE"'; then
+            TARGET_ANIMAL_ID_FOR_ADOPTION="$ADMIN_CREATED_ANIMAL_ID"
+            print_info "动物 ID: $TARGET_ANIMAL_ID_FOR_ADOPTION 存在且状态为 AVAILABLE，将用于领养测试。"
+        else
+            print_info "动物 ID: $ADMIN_CREATED_ANIMAL_ID 存在但状态不是 AVAILABLE ($(echo "$animal_check_body" | jq -r .adoptionStatus // "未知"))。将尝试创建新动物。"
+        fi
+    else
+        print_info "动物 ID: $ADMIN_CREATED_ANIMAL_ID 未找到或获取失败 (状态: $animal_check_status)。将尝试创建新动物。"
+    fi
+fi
+
+# 如果 TARGET_ANIMAL_ID_FOR_ADOPTION 仍然为空，则管理员创建一个新的测试动物
+if [ -z "$TARGET_ANIMAL_ID_FOR_ADOPTION" ]; then
+    print_info "管理员重新创建一个用于领养申请测试的动物..."
+    NEW_TEST_ANIMAL_NAME="领养测试专用猫"
+    NEW_TEST_ANIMAL_DATA='{
+        "name": "'"$NEW_TEST_ANIMAL_NAME"'", "species": "猫", "breed": "测试专用", "age": "6月", "gender": "FEMALE",
+        "healthStatus": "健康，等待领养", "adoptionStatus": "AVAILABLE",
+        "photoUrls": ["http://example.com/test_adopt_cat.jpg"],
+        "initialLocation": {"latitude": 32.0, "longitude": 118.0, "description": "测试数据"}
+    }'
+    new_test_animal_response_body=$(curl -s -w "\n%{http_code}" -X POST -H "Content-Type: application/json" -b $ADMIN_COOKIE_FILE -d "$NEW_TEST_ANIMAL_DATA" "$BASE_URL/animals")
+    new_test_animal_status=$(echo "$new_test_animal_response_body" | tail -n1)
+    new_test_animal_body=$(echo "$new_test_animal_response_body" | head -n -1)
+
+    echo "$new_test_animal_body" # 打印完整响应体
+    if [ "$new_test_animal_status" -eq 201 ]; then
+        if echo "$new_test_animal_body" | grep -q '"animalId"'; then
+            TARGET_ANIMAL_ID_FOR_ADOPTION=$(echo "$new_test_animal_body" | jq -r '.animalId // empty')
+            if [ -n "$TARGET_ANIMAL_ID_FOR_ADOPTION" ] && [ "$TARGET_ANIMAL_ID_FOR_ADOPTION" != "null" ]; then
+                print_info "新创建的领养测试动物ID: $TARGET_ANIMAL_ID_FOR_ADOPTION"
+            else
+                print_error "未能从响应中提取新创建的领养测试动物ID。"
+                TARGET_ANIMAL_ID_FOR_ADOPTION=""
+            fi
+        else
+            print_error "新创建领养测试动物的响应格式不符。"
+            TARGET_ANIMAL_ID_FOR_ADOPTION=""
+        fi
+    else
+        print_error "管理员创建新的领养测试动物失败 (状态: $new_test_animal_status)。"
+        TARGET_ANIMAL_ID_FOR_ADOPTION=""
+    fi
+fi
+
+# 确保我们有一个有效的 TARGET_ANIMAL_ID_FOR_ADOPTION
+if [ -z "$TARGET_ANIMAL_ID_FOR_ADOPTION" ] || [ "$TARGET_ANIMAL_ID_FOR_ADOPTION" == "null" ]; then
+    print_error "严重错误：未能准备好用于领养申请测试的动物ID。中止领养申请相关测试。"
+    exit 1
+else
+    print_info "将使用动物ID: $TARGET_ANIMAL_ID_FOR_ADOPTION 进行后续的领养申请测试。"
+fi
+
+
+print_step "15. 普通用户提交领养申请 (动物ID: $TARGET_ANIMAL_ID_FOR_ADOPTION)"
+if [ -n "$TARGET_ANIMAL_ID_FOR_ADOPTION" ] && [ "$TARGET_ANIMAL_ID_FOR_ADOPTION" != "null" ]; then
+    USER_APPLICATION_DATA='{
+        "animalId": '$TARGET_ANIMAL_ID_FOR_ADOPTION',
+        "details": "我非常有爱心，有丰富的养宠经验，家庭环境适合养这只可爱的动物。"
+    }'
+    application_response_body=$(curl -s -X POST -H "Content-Type: application/json" -b $USER_COOKIE_FILE -d "$USER_APPLICATION_DATA" "$BASE_URL/adoption-applications")
+    echo "$application_response_body" # 打印完整响应体
+    if echo "$application_response_body" | grep -q '"adoptionId"'; then
+        USER_APPLICATION_ID=$(echo "$application_response_body" | jq -r '.adoptionId // empty')
+        if [ -n "$USER_APPLICATION_ID" ] && [ "$USER_APPLICATION_ID" != "null" ]; then
+            print_info "领养申请提交成功，申请ID: $USER_APPLICATION_ID"
+            if echo "$application_response_body" | grep -q '"status":"PENDING_REVIEW"'; then
+                print_info "状态检查: 新提交的领养申请状态为 PENDING_REVIEW (通过)"
+            else
+                print_error "状态检查: 新提交的领养申请状态不是 PENDING_REVIEW (失败)"
+            fi
+            # 检查动物状态是否变为 PENDING_ADOPTION
+            animal_after_apply_response=$(curl -s -X GET -b $USER_COOKIE_FILE "$BASE_URL/animals/$TARGET_ANIMAL_ID_FOR_ADOPTION")
+            if echo "$animal_after_apply_response" | grep -q '"adoptionStatus":"PENDING_ADOPTION"'; then
+                print_info "动物状态检查: 动物 $TARGET_ANIMAL_ID_FOR_ADOPTION 状态变为 PENDING_ADOPTION (通过)"
+                ((passed_tests++))
+            else
+                print_error "动物状态检查: 动物 $TARGET_ANIMAL_ID_FOR_ADOPTION 状态未变为 PENDING_ADOPTION (失败)"
+                ((failed_tests++))
+                echo "动物 $TARGET_ANIMAL_ID_FOR_ADOPTION 当前信息: $animal_after_apply_response"
+            fi
+        else
+            print_error "未能从响应中提取领养申请ID。"
+            ((failed_tests++))
+            USER_APPLICATION_ID=""
+        fi
+    else
+        print_error "提交领养申请失败或响应格式不符。"
+        ((failed_tests++))
+        echo "响应: $application_response_body"
+    fi
+else
+    print_info "警告: 无有效动物ID，跳过提交领养申请测试。"
+fi
+
+
+print_step "16. 管理员查看所有待审核领养申请"
+# 预期应该能看到上面用户提交的申请
+execute_curl_and_check "GET" "$BASE_URL/adoption-applications/admin/all?status=PENDING_REVIEW" "$ADMIN_COOKIE_FILE" "" "\"adoptionId\":$USER_APPLICATION_ID" 200
+
+
+print_step "17. 管理员审核领养申请 - 批准 (申请ID: $USER_APPLICATION_ID)"
+if [ -z "$USER_APPLICATION_ID" ] || [ "$USER_APPLICATION_ID" == "null" ]; then
+    print_info "警告: 未能获取领养申请ID，跳过批准测试。"
+else
+    ADMIN_REVIEW_APPROVE_DATA='{
+        "status": "APPROVED",
+        "reviewDetails": "申请人条件符合，批准领养。"
+    }'
+    execute_curl_and_check "PUT" "$BASE_URL/adoption-applications/$USER_APPLICATION_ID/review" "$ADMIN_COOKIE_FILE" "$ADMIN_REVIEW_APPROVE_DATA" '"status":"APPROVED"' 200
+    if [ $? -eq 0 ]; then
+        # 验证动物状态是否变为 ADOPTED
+        animal_after_approval_response=$(curl -s -X GET -b $ADMIN_COOKIE_FILE "$BASE_URL/animals/$TARGET_ANIMAL_ID_FOR_ADOPTION")
+        if echo "$animal_after_approval_response" | grep -q '"adoptionStatus":"ADOPTED"'; then
+            print_info "动物状态检查: 动物 $TARGET_ANIMAL_ID_FOR_ADOPTION 状态成功变为 ADOPTED (通过)"
+            ((passed_tests++))
+        else
+            print_error "动物状态检查: 动物 $TARGET_ANIMAL_ID_FOR_ADOPTION 状态未变为 ADOPTED (失败)"
+            echo "动物 $TARGET_ANIMAL_ID_FOR_ADOPTION 当前信息: $animal_after_approval_response"
+            ((failed_tests++))
+        fi
+    fi
+fi
+
+ANIMAL_ID_FOR_REJECT_CANCEL=""
+print_step "准备用于拒绝/取消测试的第二个目标动物"
+# 这里简化处理，假设我们再创建一个。实践中，您可能希望从一个池中获取或确保其存在。
+SECOND_TEST_ANIMAL_NAME="领养拒绝测试猫"
+SECOND_TEST_ANIMAL_DATA='{
+    "name": "'"$SECOND_TEST_ANIMAL_NAME"'", "species": "猫", "breed": "拒绝专用", "age": "5月", "gender": "MALE",
+    "healthStatus": "健康", "adoptionStatus": "AVAILABLE",
+    "photoUrls": ["http://example.com/test_reject_cat.jpg"],
+    "initialLocation": {"latitude": 33.0, "longitude": 119.0, "description": "测试数据2"}
+}'
+second_test_animal_response_body=$(curl -s -w "\n%{http_code}" -X POST -H "Content-Type: application/json" -b $ADMIN_COOKIE_FILE -d "$SECOND_TEST_ANIMAL_DATA" "$BASE_URL/animals")
+second_test_animal_status=$(echo "$second_test_animal_response_body" | tail -n1)
+second_test_animal_body=$(echo "$second_test_animal_response_body" | head -n -1)
+echo "$second_test_animal_body"
+if [ "$second_test_animal_status" -eq 201 ]; then
+    if echo "$second_test_animal_body" | grep -q '"animalId"'; then
+        ANIMAL_ID_FOR_REJECT_CANCEL=$(echo "$second_test_animal_body" | jq -r '.animalId // empty')
+        if [ -n "$ANIMAL_ID_FOR_REJECT_CANCEL" ] && [ "$ANIMAL_ID_FOR_REJECT_CANCEL" != "null" ]; then
+            print_info "新创建的用于拒绝/取消测试的动物ID: $ANIMAL_ID_FOR_REJECT_CANCEL"
+        else
+            ANIMAL_ID_FOR_REJECT_CANCEL="" # 确保为空
+        fi
+    fi
+fi
+if [ -z "$ANIMAL_ID_FOR_REJECT_CANCEL" ] || [ "$ANIMAL_ID_FOR_REJECT_CANCEL" == "null" ]; then
+    print_error "严重错误：未能准备好用于拒绝/取消测试的第二个动物ID。"
+    exit 1
+fi
+
+
+print_step "18. 普通用户提交第二个领养申请 (用于测试拒绝，动物ID: $ANIMAL_ID_FOR_REJECT_CANCEL)"
+if [ -n "$ANIMAL_ID_FOR_REJECT_CANCEL" ]; then
+    USER_SECOND_APP_DATA='{
+        "animalId": '$ANIMAL_ID_FOR_REJECT_CANCEL',
+        "details": "这是我的第二个领养申请，希望这次能成功。"
+    }'
+    second_app_response_body=$(curl -s -X POST -H "Content-Type: application/json" -b $USER_COOKIE_FILE -d "$USER_SECOND_APP_DATA" "$BASE_URL/adoption-applications")
+    echo "$second_app_response_body"
+    if echo "$second_app_response_body" | grep -q '"adoptionId"'; then
+        SECOND_USER_APPLICATION_ID=$(echo "$second_app_response_body" | jq -r '.adoptionId // empty')
+        if [ -n "$SECOND_USER_APPLICATION_ID" ] && [ "$SECOND_USER_APPLICATION_ID" != "null" ]; then
+            print_info "第二个领养申请提交成功，申请ID: $SECOND_USER_APPLICATION_ID"
+        else
+            print_error "未能从响应中提取第二个领养申请ID。"
+            SECOND_USER_APPLICATION_ID=""
+        fi
+    else
+        print_error "提交第二个领养申请失败或响应格式不符。"
+    fi
+else
+    print_info "警告: 无有效动物ID ($ANIMAL_ID_FOR_REJECT_CANCEL)，跳过提交第二个领养申请测试。"
+fi
+
+
+print_step "19. 管理员审核领养申请 - 拒绝 (申请ID: $SECOND_USER_APPLICATION_ID)"
+if [ -z "$SECOND_USER_APPLICATION_ID" ] || [ "$SECOND_USER_APPLICATION_ID" == "null" ]; then
+    print_info "警告: 未能获取第二个领养申请ID，跳过拒绝测试。"
+else
+    ADMIN_REVIEW_REJECT_DATA='{
+        "status": "REJECTED",
+        "reviewDetails": "抱歉，您的当前条件暂不满足领养要求。"
+    }'
+    execute_curl_and_check "PUT" "$BASE_URL/adoption-applications/$SECOND_USER_APPLICATION_ID/review" "$ADMIN_COOKIE_FILE" "$ADMIN_REVIEW_REJECT_DATA" '"status":"REJECTED"' 200
+    if [ $? -eq 0 ]; then
+        # 验证动物状态是否恢复为 AVAILABLE (如果之前是 PENDING_ADOPTION)
+        animal_after_rejection_response=$(curl -s -X GET -b $ADMIN_COOKIE_FILE "$BASE_URL/animals/$ANIMAL_ID_FOR_REJECT_CANCEL")
+        if echo "$animal_after_rejection_response" | grep -q '"adoptionStatus":"AVAILABLE"'; then # 假设会恢复
+            print_info "动物状态检查: 动物 $ANIMAL_ID_FOR_REJECT_CANCEL 状态成功恢复为 AVAILABLE (通过)"
+        else
+            print_error "动物状态检查: 动物 $ANIMAL_ID_FOR_REJECT_CANCEL 状态未恢复为 AVAILABLE (失败)"
+            echo "动物 $ANIMAL_ID_FOR_REJECT_CANCEL 当前信息: $animal_after_rejection_response"
+        fi
+    fi
+fi
+
+# --- 准备第三个申请用于测试取消 ---
+# 假设 ID=2 的动物现在是 AVAILABLE (上一步拒绝后恢复了)
+THIRD_USER_APPLICATION_ID=""
+print_step "20. 普通用户提交第三个领养申请 (用于测试取消，动物ID: $ANIMAL_ID_FOR_REJECT_CANCEL)"
+if [ -n "$ANIMAL_ID_FOR_REJECT_CANCEL" ]; then
+    # 确保动物是AVAILABLE
+    animal_check_response=$(curl -s -X GET -b $USER_COOKIE_FILE "$BASE_URL/animals/$ANIMAL_ID_FOR_REJECT_CANCEL")
+    if ! echo "$animal_check_response" | grep -q '"adoptionStatus":"AVAILABLE"'; then
+        print_error "动物 $ANIMAL_ID_FOR_REJECT_CANCEL 当前不是 AVAILABLE 状态，无法进行取消测试的前置申请。当前状态: $(echo "$animal_check_response" | jq -r .adoptionStatus)"
+    else
+        USER_THIRD_APP_DATA='{ "animalId": '$ANIMAL_ID_FOR_REJECT_CANCEL', "details": "我想申请这个，但可能稍后会取消。"}'
+        third_app_response_body=$(curl -s -X POST -H "Content-Type: application/json" -b $USER_COOKIE_FILE -d "$USER_THIRD_APP_DATA" "$BASE_URL/adoption-applications")
+        echo "$third_app_response_body"
+        if echo "$third_app_response_body" | grep -q '"adoptionId"'; then
+            THIRD_USER_APPLICATION_ID=$(echo "$third_app_response_body" | jq -r '.adoptionId // empty')
+            if [ -n "$THIRD_USER_APPLICATION_ID" ] && [ "$THIRD_USER_APPLICATION_ID" != "null" ]; then
+                print_info "第三个领养申请提交成功，申请ID: $THIRD_USER_APPLICATION_ID"
+            else
+                print_error "未能从响应中提取第三个领养申请ID。"
+                THIRD_USER_APPLICATION_ID=""
+            fi
+        else
+            print_error "提交第三个领养申请失败或响应格式不符。"
+        fi
+    fi
+else
+    print_info "警告: 无有效动物ID ($ANIMAL_ID_FOR_REJECT_CANCEL)，跳过提交第三个领养申请测试。"
+fi
+
+
+print_step "21. 普通用户取消自己的领养申请 (申请ID: $THIRD_USER_APPLICATION_ID)"
+if [ -z "$THIRD_USER_APPLICATION_ID" ] || [ "$THIRD_USER_APPLICATION_ID" == "null" ]; then
+    print_info "警告: 未能获取第三个领养申请ID，跳过取消测试。"
+else
+    execute_curl_and_check "PUT" "$BASE_URL/adoption-applications/$THIRD_USER_APPLICATION_ID/cancel" "$USER_COOKIE_FILE" "" '"status":"CANCELLED"' 200
+    if [ $? -eq 0 ]; then
+        # 验证动物状态是否恢复为 AVAILABLE (如果之前是 PENDING_ADOPTION)
+        animal_after_cancel_response=$(curl -s -X GET -b $USER_COOKIE_FILE "$BASE_URL/animals/$ANIMAL_ID_FOR_REJECT_CANCEL")
+        if echo "$animal_after_cancel_response" | grep -q '"adoptionStatus":"AVAILABLE"'; then # 假设会恢复
+            print_info "动物状态检查: 动物 $ANIMAL_ID_FOR_REJECT_CANCEL 状态成功恢复为 AVAILABLE (通过)"
+        else
+            print_error "动物状态检查: 动物 $ANIMAL_ID_FOR_REJECT_CANCEL 状态未恢复为 AVAILABLE (失败)"
+            echo "动物 $ANIMAL_ID_FOR_REJECT_CANCEL 当前信息: $animal_after_cancel_response"
+        fi
+    fi
+fi
+
+
+print_step "22. 普通用户查看自己的领养申请列表"
+execute_curl_and_check "GET" "$BASE_URL/adoption-applications/my-applications" "$USER_COOKIE_FILE" "" "" 200 # 简单检查成功，具体内容会比较多
+
+print_step "23. 管理员查看所有领养申请 (不过滤状态)"
+execute_curl_and_check "GET" "$BASE_URL/adoption-applications/admin/all" "$ADMIN_COOKIE_FILE" "" "" 200
+
 # --- 测试结束 ---
 print_step "API 测试脚本执行完毕"
 # ... print_step "API 测试脚本执行完毕" ...
@@ -345,6 +620,7 @@ if [ "$failed_tests" -gt 0 ]; then
 else
     echo -e "${GREEN}失败的测试个数: $failed_tests${NC}"
 fi
+((total_tests = passed_tests + failed_tests))
 echo -e "总共执行测试数: $total_tests"
 echo -e "${YELLOW}=========================================${NC}"
 

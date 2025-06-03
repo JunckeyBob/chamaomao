@@ -6,13 +6,13 @@ import java.time.LocalDateTime;
 
 @Data
 public class AdoptionApplicationResponseDto {
-    private Long adoptionId;
-    private Long animalId;
-    private Long applicantUserId;
+    private int adoptionId;
+    private int animalId;
+    private int applicantUserId;
     private AdoptionStatusApplication status;
     private String details;
     private String reviewDetails;
-    private Long reviewedByUserId;
+    private int reviewedByUserId;
     private LocalDateTime applicationDate;
     private LocalDateTime reviewDate;
 }

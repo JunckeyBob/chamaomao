@@ -13,15 +13,17 @@ import java.util.Optional;
 @Repository
 public interface AdoptionApplicationRepository extends JpaRepository<AdoptionApplication, Integer> {
 
-    List<AdoptionApplication> findByAnimal(Animal animal);
-
     List<AdoptionApplication> findByApplicantUser(User applicantUser);
 
-    List<AdoptionApplication> findByReviewedByUser(User reviewedByUser);
+    List<AdoptionApplication> findByApplicantUser_Id(Integer applicantUserId);
+
+    List<AdoptionApplication> findByAnimal(Animal animal);
+
+    List<AdoptionApplication> findByAnimal_AnimalId(Integer animalId);
 
     List<AdoptionApplication> findByStatus(AdoptionStatusApplication status);
 
-    Optional<AdoptionApplication> findByApplicantUserAndAnimal(User applicantUser, Animal animal);
+    Optional<AdoptionApplication> findByApplicantUserAndAnimalAndStatus(User applicantUser, Animal animal, AdoptionStatusApplication status);
 
-    List<AdoptionApplication> findByAnimalAnimalIdAndStatus(Integer animalId, AdoptionStatusApplication status);
+    List<AdoptionApplication> findByAnimalAndStatus(Animal animal, AdoptionStatusApplication status);
 }

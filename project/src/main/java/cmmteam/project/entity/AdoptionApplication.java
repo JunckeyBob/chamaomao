@@ -4,6 +4,7 @@ import cmmteam.project.entity.enums.AdoptionStatusApplication;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -49,7 +50,15 @@ public class AdoptionApplication {
     @Column(name = "details", columnDefinition = "TEXT")
     private String details;
 
+    @Lob
+    @Column(name = "review_details", columnDefinition = "TEXT") // By ADMIN
+    private String reviewDetails;
+
     @CreationTimestamp
     @Column(name = "application_date", nullable = false, updatable = false) // Added for audit
     private LocalDateTime applicationDate;
+
+    @UpdateTimestamp
+    @Column(name = "review_date")
+    private LocalDateTime reviewDate;
 }

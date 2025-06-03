@@ -46,8 +46,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/animals", "/api/animals/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/animals").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/animals/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/animals/**").authenticated() // hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/animals/**").authenticated()
                         .requestMatchers("/api/users/profile", "/api/users/password").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/adoption-applications").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/adoption-applications/{id}/review").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/adoption-applications/{id}/cancel").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/adoption-applications/my-applications").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/adoption-applications/admin/all").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/adoption-applications/{id}").authenticated()
                         .anyRequest().authenticated()
                 );
         return http.build();
