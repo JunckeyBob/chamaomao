@@ -47,7 +47,7 @@
 
     <!-- button container -->
     <div class="button-container">
-      <button class="op-button" style="margin-right: 50px"><i class="fa-solid fa-house"></i>&nbsp;领养</button>
+      <button class="op-button" style="margin-right: 50px" @click="this.$router.push('/adopt')"><i class="fa-solid fa-house"></i>&nbsp;领养</button>
       <!--<button class="op-button" @click="this.$router.push('/map')"><i class="fa-solid fa-location-dot"></i>&nbsp;定位</button>
       <button class="op-button"><i class="fa-solid fa-pen-to-square"></i>&nbsp;编辑</button>-->
     </div>
