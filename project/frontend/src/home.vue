@@ -42,7 +42,7 @@
         <!--<button class="home-button"><i class="fa-solid fa-circle-exclamation" style="color: red"></i><br>申请</button>-->
         <button 
           class="home-button"
-          @click=""
+          @click="this.$router.push('/map')"
         >
           <i class="fa-solid fa-location-dot"></i><br>地图
         </button>
