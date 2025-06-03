@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class AdoptionGuideResponseDto {
-    private Long guideId;
+    private int guideId;
     private String title;
     private String content;
-    private Long authorId;
+    private int authorId;
     private LocalDateTime publishDate;
     private LocalDateTime lastModifiedDate;
 }

@@ -600,7 +600,6 @@ else
     fi
 fi
 
-
 print_step "22. 普通用户查看自己的领养申请列表"
 execute_curl_and_check "GET" "$BASE_URL/adoption-applications/my-applications" "$USER_COOKIE_FILE" "" "" 200 # 简单检查成功，具体内容会比较多
 
