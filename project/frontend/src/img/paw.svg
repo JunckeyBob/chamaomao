@@ -1,0 +1,10 @@
+<svg width="200" height="115" viewBox="0 0 200 115" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main paw pad -->
+  <path d="M100 45c-20 0-40 15-40 35s20 25 40 25 40-5 40-25-20-35-40-35z" fill="#fff3d8"/>
+  
+  <!-- Toes -->
+  <circle cx="40" cy="45" r="15" fill="#fff3d8"/>
+  <circle cx="77" cy="15" r="15" fill="#fff3d8"/>
+  <circle cx="123" cy="15" r="15" fill="#fff3d8"/>
+  <circle cx="160" cy="45" r="15" fill="#fff3d8"/>
+</svg>

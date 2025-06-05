@@ -1,0 +1,9 @@
+<svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ears -->
+  <polygon points="20,40 20,5 55,20" fill="#fff3d8" />
+  <polygon points="130,40 130,5 95,20" fill="#fff3d8" />
+  
+  <!-- Head -->
+  <circle cx="75" cy="75" r="50" fill="#fff3d8" />
+
+</svg>

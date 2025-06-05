@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Kiwi+Maru&family=Noto+Sans+SC:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=ZCOOL+KuaiLe&display=swap');
+
+body, html {
+  margin: 0;
+  font-family: "ZCOOL KuaiLe", sans-serif;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: #ffc23f;
+}
+
+.home-container {
+  width: 100%;
+}
+
+.head-container {
+  display: block;
+  width: 100%;
+  height: 10%;
+  padding-top: 20px;
+}
+
+.content-container {
+  display: block;
+  width: 100%;
+  min-height: 65%;
+  background-image: url("../img/stripes.svg");
+  background-size: cover;
+}
+
+.back-button {
+  background-color: #fff3d8;
+  color: #ffc23f;
+  border: none;
+  border-radius: 10px;
+  margin: 10px 40px;
+  height: 40px;
+  width: 100px;
+  font-family: "ZCOOL KuaiLe", sans-serif;
+  font-size: 25px;
+}
+
+.map-container {
+  display: block;
+  width: 80%;
+  min-height: 600px;
+  margin-left: 7%;
+  margin-top: 0px;
+  border: none;
+  border-radius: 30px;
+  background-color: #fff3d8;
+  color: #ff9600;
+  padding: 30px 30px 0 30px;
+}
+
+.title-container {
+  display: block;
+  border: none;
+  width: 100%;
+}
+
+.title {
+  color: #ff9600;
+  font-family: "ZCOOL KuaiLe", sans-serif;
+  font-size: 50px;
+  float: left;
+}
+
+.add-button {
+  background-color: #ff9600;
+  color: #fff3d8;
+  border: none;
+  border-radius: 10px;
+  width: 100px;
+  height: 50px;
+  align-content: center;
+  float: right;
+  font-size: 30px;
+  margin-top: 40px;
+}
+
+.iframe-container {
+  display: block;
+  width: 100%;
+  height: 300px;
+}
+
+.upload-button {
+  display: block;
+  width: 80%;
+  height: 560px;
+  background-color: #ffd885;
+  color: #fff3d8;
+  border: none;
+  border-radius: 30px 0 0 30px;
+  float: left;
+}
+
+.upload-button p {
+  font-size: 200px;
+  font-weight: 700;
+}
+
+.confirm-button {
+  display: block;
+  width: 20%;
+  height: 560px;
+  background-color: #ff9600;
+  color: #fff3d8;
+  border: none;
+  border-radius: 0 30px 30px 0;
+  float: left;
+}
+
+.confirm-button p {
+  font-size: 100px;
+  font-weight: 700;
+  font-family: "ZCOOL KuaiLe", sans-serif;
+}

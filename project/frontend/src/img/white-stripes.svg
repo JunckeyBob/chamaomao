@@ -1,0 +1,9 @@
+<svg width="2000" height="2000" viewBox="0 0 2000 2000" xmlns="http://www.w3.org/2000/svg">
+  <!-- orange stripe -->
+  <rect x="0" y="300" width="400" height="200" fill="#ff9600" />
+  <circle cx="400" cy="400" r="100" fill="#ff9600"/>
+
+  <!-- brown stripe -->
+  <rect x="1600" y="700" width="400" height="200" fill="#fff3d8" />
+  <circle cx="1600" cy="800" r="100" fill="#fff3d8"/>
+</svg>
