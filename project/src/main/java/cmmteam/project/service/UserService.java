@@ -4,6 +4,7 @@ import cmmteam.project.dto.UserLoginRequestDto;
 import cmmteam.project.dto.UserProfileUpdateRequestDto;
 import cmmteam.project.dto.UserRegistrationRequestDto;
 import cmmteam.project.dto.PasswordUpdateRequestDto;
+import cmmteam.project.dto.UserProfileResponseDto;
 
 public interface UserService {
 
@@ -14,5 +15,7 @@ public interface UserService {
     void updateUserProfile(int userId, UserProfileUpdateRequestDto profileUpdateRequest);
 
     void updateUserPassword(int userId, PasswordUpdateRequestDto passwordUpdateRequest);
+
+    UserProfileResponseDto getUserProfile(int userId);
 
 }

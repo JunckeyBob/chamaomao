@@ -167,6 +167,14 @@ USER_PROFILE_UPDATE_DATA='{
 }'
 execute_curl_and_check "PUT" "$BASE_URL/users/profile" "$USER_COOKIE_FILE" "$USER_PROFILE_UPDATE_DATA" "用户信息更新成功！" 200
 
+# 4.1 普通用户获取个人资料
+print_step "4.1 普通用户获取个人资料"
+execute_curl_and_check "GET" "$BASE_URL/users/profile" "$USER_COOKIE_FILE" "" "\"phoneNumber\":\"$USER_PHONE\"" 200
+
+# 4.2 管理员获取个人资料
+print_step "4.2 管理员获取个人资料"
+execute_curl_and_check "GET" "$BASE_URL/users/profile" "$ADMIN_COOKIE_FILE" "" "\"phoneNumber\":\"$ADMIN_PHONE\"" 200
+
 # 5. 用户密码修改
 print_step "5. 用户密码修改 (使用用户Cookie, 原始密码: $USER_PASS_ORIGINAL, 新密码: $USER_PASS_NEW)"
 USER_PASS_UPDATE_DATA='{

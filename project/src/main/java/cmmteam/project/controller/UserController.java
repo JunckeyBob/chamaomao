@@ -4,6 +4,7 @@ import cmmteam.project.dto.UserLoginRequestDto;
 import cmmteam.project.dto.UserProfileUpdateRequestDto;
 import cmmteam.project.dto.UserRegistrationRequestDto;
 import cmmteam.project.dto.PasswordUpdateRequestDto;
+import cmmteam.project.dto.UserProfileResponseDto;
 import cmmteam.project.entity.User;
 import cmmteam.project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +36,7 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("注册过程中发生错误。");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -103,6 +104,23 @@ public class UserController {
             return ResponseEntity.ok("用户信息更新成功！");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Get Profile
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile(@Valid Authentication authentication) {
+        User currentUser = getCurrentUserFromAuth(authentication);
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证。");
+        }
+        Integer currentUserId = currentUser.getId();
+
+        try {
+            UserProfileResponseDto userProfile = userService.getUserProfile(currentUserId);
+            return ResponseEntity.status(HttpStatus.OK).body(userProfile);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 

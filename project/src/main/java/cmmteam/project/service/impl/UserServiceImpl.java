@@ -4,6 +4,7 @@ import cmmteam.project.dto.UserLoginRequestDto;
 import cmmteam.project.dto.UserProfileUpdateRequestDto;
 import cmmteam.project.dto.UserRegistrationRequestDto;
 import cmmteam.project.dto.PasswordUpdateRequestDto;
+import cmmteam.project.dto.UserProfileResponseDto;
 import cmmteam.project.entity.User;
 import cmmteam.project.entity.enums.AccountStatus;
 import cmmteam.project.entity.enums.UserRole;
@@ -112,6 +113,21 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(passwordUpdateRequest.getNewPassword()));
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public UserProfileResponseDto getUserProfile(int userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("用户未找到，ID: " + userId));
+        return new UserProfileResponseDto(
+            user.getId(),
+            user.getPhoneNumber(),
+            user.getNickname(),
+            user.getAddress(),
+            user.getRegistrationDate(),
+            user.getRole()
+        );
     }
 
 }
